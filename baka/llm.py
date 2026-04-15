@@ -1,6 +1,7 @@
 import requests
 import streamlit as st
 
+# Ensure you have added GROQ_API_KEY in your Streamlit Cloud Secrets
 API_KEY = st.secrets["GROQ_API_KEY"]
 
 def generate_response(prompt):
@@ -12,7 +13,8 @@ def generate_response(prompt):
     }
 
     data = {
-        "model": "llama3-70b-8192",   # ✅ FIXED MODEL
+        # Swapped decommissioned 'llama3-70b-8192' for the newer 'llama-3.3-70b-versatile'
+        "model": "llama-3.3-70b-versatile",
         "messages": [
             {"role": "system", "content": "You are a helpful finance assistant."},
             {"role": "user", "content": prompt}
