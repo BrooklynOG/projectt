@@ -1,31 +1,30 @@
 from sentence_transformers import SentenceTransformer
-import chromadb
 import os
 
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
-client = chromadb.Client()
-collection = client.get_or_create_collection(name="finance")
+# Load notes once
+BASE_DIR = os.path.dirname(__file__)
+file_path = os.path.join(BASE_DIR, "data", "notes.txt")
+
+with open(file_path, "r") as f:
+    documents = f.read().split("\n\n")
+
+doc_embeddings = model.encode(documents)
 
 def load_data():
-    BASE_DIR = os.path.dirname(__file__)
-    file_path = os.path.join(BASE_DIR, "data", "notes.txt")
-
-    with open(file_path, "r") as f:
-        texts = f.read().split("\n\n")
-
-    embeddings = model.encode(texts)
-
-    for i, text in enumerate(texts):
-        collection.add(
-            documents=[text],
-            embeddings=[embeddings[i].tolist()],
-            ids=[str(i)]
-        )
+    # already loaded above
+    pass
 
 def query_data(query):
-    q_emb = model.encode([query]).tolist()
-    results = collection.query(query_embeddings=q_emb, n_results=2)
+    query_emb = model.encode([query])[0]
 
-    docs = results.get("documents", [[]])[0]
-    return " ".join(docs) if docs else ""
+    # simple similarity
+    scores = []
+    for emb in doc_embeddings:
+        score = sum(q * d for q, d in zip(query_emb, emb))
+        scores.append(score)
+
+    # get best match
+    best_idx = scores.index(max(scores))
+    return documents[best_idx]
