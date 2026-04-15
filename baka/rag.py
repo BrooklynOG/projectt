@@ -1,5 +1,6 @@
 from sentence_transformers import SentenceTransformer
 import chromadb
+import os
 
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
@@ -7,7 +8,10 @@ client = chromadb.Client()
 collection = client.get_or_create_collection(name="finance")
 
 def load_data():
-    with open("data/notes.txt", "r") as f:
+    BASE_DIR = os.path.dirname(__file__)
+    file_path = os.path.join(BASE_DIR, "data", "notes.txt")
+
+    with open(file_path, "r") as f:
         texts = f.read().split("\n\n")
 
     embeddings = model.encode(texts)
