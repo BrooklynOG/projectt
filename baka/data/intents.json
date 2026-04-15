@@ -1,0 +1,7 @@
+{
+  "expense": ["expense", "spent", "paid"],
+  "income": ["income", "salary", "earned"],
+  "budget": ["budget", "save money", "financial advice"],
+  "task": ["task", "reminder", "todo"],
+  "general": ["what", "how", "why"]
+}
