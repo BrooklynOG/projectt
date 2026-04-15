@@ -1,13 +1,14 @@
 import requests
 import os
 
-API_KEY = os.getenv("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")
+# Get API key from environment (SAFE)
+API_KEY = os.getenv("GROQ_API_KEY")
 
 def generate_response(prompt):
     if not API_KEY:
-        return "API key missing. Set XAI_API_KEY."
+        return "Error: API key not set. Please set GROQ_API_KEY."
 
-    url = "https://api.x.ai/v1/chat/completions"
+    url = "https://api.groq.com/openai/v1/chat/completions"
 
     headers = {
         "Authorization": f"Bearer {API_KEY}",
@@ -15,7 +16,7 @@ def generate_response(prompt):
     }
 
     data = {
-        "model": "grok-1",
+        "model": "llama3-8b-8192",
         "messages": [
             {"role": "system", "content": "You are a helpful finance assistant."},
             {"role": "user", "content": prompt}
