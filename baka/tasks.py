@@ -1,6 +1,8 @@
 import json
+import os
 
-FILE = "data/transactions.json"
+BASE_DIR = os.path.dirname(__file__)
+FILE = os.path.join(BASE_DIR, "data", "transactions.json")
 
 def load_data():
     try:
