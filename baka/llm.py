@@ -1,13 +1,10 @@
 import requests
-import os
+import streamlit as st
 
-# Get API key from environment (SAFE)
-API_KEY = os.getenv("GROQ_API_KEY")
+# Get API key from Streamlit secrets
+API_KEY = st.secrets["GROQ_API_KEY"]
 
 def generate_response(prompt):
-    if not API_KEY:
-        return "Error: API key not set. Please set GROQ_API_KEY."
-
     url = "https://api.groq.com/openai/v1/chat/completions"
 
     headers = {
